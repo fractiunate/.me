@@ -115,7 +115,7 @@
     @apply border-border outline-ring/50;
   }
   html {
-    background-color: oklch(60% .25 330); /* CTA purple — fills overscroll area */
+    background-color: #0f172a; /* slate-900 — matches site gradient start */
   }
   body {
     @apply bg-background text-foreground;
