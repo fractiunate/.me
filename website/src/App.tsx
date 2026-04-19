@@ -5,6 +5,7 @@ import {
   BookOpen,
   ChevronLeft,
   ChevronRight,
+  Cloud,
   FileText,
   Mail,
   MessageCircle,
@@ -19,13 +20,15 @@ import { CarouselDots } from "@/components/CarouselDots"
 import { ContactCard } from "@/components/ContactCard"
 import { CVSection } from "@/components/CVSection"
 import { Footer } from "@/components/Footer"
+import { Header } from "@/components/Header"
 import { NavButtons } from "@/components/NavButtons"
+import { OfferingsSection } from "@/components/OfferingsSection"
 import { SectionHeader } from "@/components/SectionHeader"
 import { ServiceCard } from "@/components/ServiceCard"
 import { ServiceDescription } from "@/components/ServiceDescription"
 import { SocialLinks } from "@/components/SocialLinks"
 
-const SECTIONS = ["hero", "contact", "cv"] as const
+const SECTIONS = ["hero", "offerings", "contact", "cv"] as const
 
 const contactItems = [
   {
@@ -57,6 +60,7 @@ const contactItems = [
 ]
 
 export default function App() {
+  const [headerScrolled, setHeaderScrolled] = useState(false)
   const [showBackToTop, setShowBackToTop] = useState(false)
   const [currentCard, setCurrentCard] = useState(0)
   const [currentSection, setCurrentSection] = useState(0)
@@ -68,6 +72,7 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY
+      setHeaderScrolled(scrollY > 10)
       setShowBackToTop(scrollY > window.innerHeight)
 
       const midpoint = scrollY + window.innerHeight / 2
@@ -119,6 +124,8 @@ export default function App() {
     <TooltipProvider>
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-x-hidden">
 
+        <Header scrolled={headerScrolled} />
+
         <NavButtons
           showBackToTop={showBackToTop}
           isFooterVisible={isFooterVisible}
@@ -140,8 +147,11 @@ export default function App() {
             // Mobile-first: tight padding, grow to fill screen
             "min-h-screen flex flex-col items-center justify-center",
             "px-4 sm:px-6 lg:px-8",
+            // Top padding clears the fixed header on desktop
+            "pt-16 lg:pt-20",
             // Bottom padding avoids the fixed nav buttons (larger on mobile to clear iOS home bar)
             "pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-32",
+            "scroll-mt-20",
           ].join(" ")}
         >
           <div className="max-w-4xl mx-auto text-center w-full">
@@ -179,12 +189,23 @@ export default function App() {
               Architecture, made in Berlin.
             </p>
 
-            {/* CTA buttons — stacked on mobile, row on sm+ */}
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center items-center mb-6 sm:mb-8">
+            {/* CTA buttons — mobile only; desktop sees these in the Header */}
+            <div className="flex flex-col gap-3 justify-center items-center mb-6 sm:mb-8 lg:hidden">
               <Button
                 size="lg"
                 asChild
-                className="w-full sm:w-44 bg-gradient-to-r from-[oklch(60%_.25_330)] to-[oklch(65%_.25_320)] hover:from-[oklch(55%_.22_325)] hover:to-[oklch(60%_.25_320)] text-white border-0 shadow-lg shadow-[oklch(60%_.25_330)]/30"
+                className="w-full sm:w-56 bg-gradient-to-r from-[oklch(60%_.25_330)] to-[oklch(65%_.25_320)] hover:from-[oklch(55%_.22_325)] hover:to-[oklch(60%_.25_320)] text-white border-0 shadow-lg shadow-[oklch(60%_.25_330)]/30"
+              >
+                <a href="#offerings">
+                  <Cloud className="w-5 h-5 mr-2" />
+                  My Offerings
+                </a>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+                className="w-full sm:w-56 bg-transparent border-2 border-slate-600 text-white hover:bg-slate-800/50 hover:border-[oklch(60%_.25_330)] hover:text-white transition-all duration-300"
               >
                 <a href="#contact">Get in Touch</a>
               </Button>
@@ -192,7 +213,7 @@ export default function App() {
                 size="lg"
                 variant="outline"
                 asChild
-                className="w-full sm:w-44 bg-transparent border-2 border-slate-600 text-white hover:bg-slate-800/50 hover:border-[oklch(60%_.25_330)] hover:text-white transition-all duration-300"
+                className="w-full sm:w-56 bg-transparent border-2 border-slate-600 text-white hover:bg-slate-800/50 hover:border-[oklch(60%_.25_330)] hover:text-white transition-all duration-300"
               >
                 <a href="#cv">
                   <Trophy className="w-5 h-5 mr-2" />
@@ -203,7 +224,7 @@ export default function App() {
                 size="lg"
                 variant="outline"
                 asChild
-                className="w-full sm:w-44 bg-transparent border-2 border-slate-600 text-white hover:bg-slate-800/50 hover:border-[oklch(60%_.25_330)] hover:text-white transition-all duration-300"
+                className="w-full sm:w-56 bg-transparent border-2 border-slate-600 text-white hover:bg-slate-800/50 hover:border-[oklch(60%_.25_330)] hover:text-white transition-all duration-300"
               >
                 <a href="https://devops-sushi.de/" target="_blank" rel="noopener noreferrer">
                   <BookOpen className="w-5 h-5 mr-2" />
@@ -214,7 +235,7 @@ export default function App() {
                 size="lg"
                 variant="outline"
                 asChild
-                className="w-full sm:w-44 bg-transparent border-2 border-slate-600 text-white hover:bg-slate-800/50 hover:border-[oklch(60%_.25_330)] hover:text-white transition-all duration-300"
+                className="w-full sm:w-56 bg-transparent border-2 border-slate-600 text-white hover:bg-slate-800/50 hover:border-[oklch(60%_.25_330)] hover:text-white transition-all duration-300"
               >
                 <a href="https://tree.fractiunate.me" target="_blank" rel="noopener noreferrer">
                   <Network className="w-5 h-5 mr-2" />
@@ -323,10 +344,13 @@ export default function App() {
           </div>
         </section>
 
+        {/* ── Offerings ───────────────────────────────────────────── */}
+        <OfferingsSection />
+
         {/* ── Contact ──────────────────────────────────────────────── */}
         <section
           id="contact"
-          className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20"
+          className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 scroll-mt-20"
         >
           <div className="max-w-4xl mx-auto w-full">
             <SectionHeader
@@ -345,7 +369,7 @@ export default function App() {
         {/* ── CV ───────────────────────────────────────────────────── */}
         <section
           id="cv"
-          className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20"
+          className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20 scroll-mt-20"
         >
           <div className="max-w-6xl mx-auto w-full">
             <SectionHeader
