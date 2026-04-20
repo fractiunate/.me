@@ -51,20 +51,6 @@ export function Header({ scrolled }: HeaderProps) {
           : "bg-slate-900/90 backdrop-blur-md border-b border-slate-700/50 lg:bg-transparent lg:backdrop-blur-none lg:border-b-0",
       )}
     >
-      {/* Mobile header CTA */}
-      <div className="w-full flex justify-end lg:hidden">
-        <Button
-          size="sm"
-          asChild
-          className="bg-gradient-to-r from-[oklch(60%_.25_330)] to-[oklch(65%_.25_320)] hover:from-[oklch(55%_.22_325)] hover:to-[oklch(60%_.25_320)] text-white border-0 shadow-md shadow-[oklch(60%_.25_330)]/25"
-        >
-          <a href="#offerings">
-            <Cloud className="w-3.5 h-3.5 mr-1.5" />
-            My Offerings
-          </a>
-        </Button>
-      </div>
-
       {/* Desktop header actions */}
       <div className="hidden lg:flex w-full items-center">
         <div className="flex-1" />
@@ -75,11 +61,13 @@ export function Header({ scrolled }: HeaderProps) {
               <button
                 type="button"
                 className={cn(
-                  "group inline-flex h-9 w-max items-center justify-center gap-1 rounded-md px-4 py-2 text-sm font-medium",
+                  "group inline-flex h-9 w-max items-center justify-center gap-1 rounded-md border px-4 py-2 text-sm font-medium",
                   "text-slate-300 hover:text-white",
-                  "transition-colors duration-200",
+                  "transition-all duration-200",
                   "focus:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(60%_.25_330)]",
-                  isOfferingsOpen ? "bg-slate-700/60 text-white" : "bg-transparent hover:bg-slate-700/50",
+                  isOfferingsOpen
+                    ? "bg-slate-700/60 border-[oklch(60%_.25_330)] text-white"
+                    : "bg-transparent border-slate-600 hover:bg-slate-800/50 hover:border-[oklch(60%_.25_330)]",
                 )}
                 aria-expanded={isOfferingsOpen}
                 aria-label="My Offerings"
